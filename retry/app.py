@@ -22,7 +22,7 @@ InputLayer.__init__ = patched_init
 # ---------------------------
 # Load the trained model
 # ---------------------------
-model = load_model("retry/indian_food_classifier_mobilenetv5.keras", compile=False)
+model = load_model("indian_food_classifier_mobilenetv5.keras", compile=False)
 
 # ---------------------------
 # Food classes
