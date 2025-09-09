@@ -5,11 +5,24 @@ import numpy as np
 from PIL import Image
 import pandas as pd
 import matplotlib.pyplot as plt
+from tensorflow.keras.layers import InputLayer
+
+# ---------------------------
+# Patch InputLayer to ignore batch_shape during deserialization
+# ---------------------------
+_orig_init = InputLayer.__init__
+
+def patched_init(self, *args, **kwargs):
+    if 'batch_shape' in kwargs:
+        kwargs.pop('batch_shape')  # remove batch_shape
+    _orig_init(self, *args, **kwargs)
+
+InputLayer.__init__ = patched_init
 
 # ---------------------------
 # Load the trained model
 # ---------------------------
-model = load_model("retry/indian_food_classifier_mobilenetv5.keras" , compile=False)
+model = load_model("retry/indian_food_classifier_mobilenetv5.keras", compile=False)
 
 # ---------------------------
 # Food classes
@@ -157,11 +170,3 @@ if uploaded_file is not None:
             st.info(condition_advice)
 
         # Sugar check
-        if check_sugar:
-            sugar = sugar_content.get(predicted_food, 0)
-            if sugar > 10:
-                st.warning(f"⚠️ High sugar content ({sugar}g per serving). May not be suitable for diabetics.")
-            else:
-                st.success(f"✅ Sugar content is moderate ({sugar}g). Safe for most users.")
-    else:
-        st.warning("Nutritional info not available for this food yet.")
