@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # ---------------------------
 # Load the trained model
 # ---------------------------
-model = load_model("indian_food_classifier_mobilenetv5.keras")
+model = load_model("retry/indian_food_classifier_mobilenetv5.keras")
 
 # ---------------------------
 # Food classes
